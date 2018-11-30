@@ -1,0 +1,22 @@
+# Python
+# ~~~~~~
+
+## Files
+.coverage
+*.egg
+*.swp
+*.zip
+
+## Directories
+build/
+dist/
+venv/
+*.egg-info/
+
+## Hidden directories
+.cache/
+.eggs/
+.hypothesis/
+
+## Magic directories
+__pycache__/

@@ -1,10 +1,10 @@
 import pytest
 
-from aoc.year_2015.day_01 import find_floor
+from aoc.year_2015.day_01 import basement_entered, find_floor
 from aoc.year_2015.day_01 import puzzle_input as real_instructions
 
 
-def test_invalid_characters_skipped():
+def test_find_floor_invalid_characters_skipped():
     instructions = '((xyz))'
     floor = find_floor(instructions)
 
@@ -25,13 +25,32 @@ def test_invalid_characters_skipped():
         (')())())', -3),
     ],
 )
-def test_example_instructions(instructions: str, expected_floor: int):
+def test_find_floor_examples(instructions: str, expected_floor: int):
     floor = find_floor(instructions)
 
     assert floor == expected_floor
 
 
-def test_real_instructions():
+def test_find_floor_real_instructions():
     floor = find_floor(real_instructions)
 
     assert floor == 232
+
+
+@pytest.mark.parametrize(
+    'instructions, expected_position',
+    [
+        (')', 1),
+        ('()())', 5),
+    ],
+)
+def test_basement_entered_examples(instructions: str, expected_position: int):
+    position = basement_entered(instructions)
+
+    assert position == expected_position
+
+
+def test_basement_entered_real_instructions():
+    position = basement_entered(real_instructions)
+
+    assert position == 1783

@@ -1,6 +1,7 @@
 import pytest
 
 from aoc.year_2015.day_01 import basement_entered, find_floor
+from aoc.year_2015.day_01 import BasementNotEntered
 from aoc.year_2015.day_01 import puzzle_input as real_instructions
 
 
@@ -35,6 +36,16 @@ def test_find_floor_real_instructions():
     floor = find_floor(real_instructions)
 
     assert floor == 232
+
+
+def test_basement_not_entered_no_instructions():
+    with pytest.raises(BasementNotEntered):
+        basement_entered('')
+
+
+def test_basement_not_entered():
+    with pytest.raises(BasementNotEntered):
+        basement_entered('(((')
 
 
 @pytest.mark.parametrize(

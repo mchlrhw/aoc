@@ -17,6 +17,7 @@ venv/
 .cache/
 .eggs/
 .hypothesis/
+.mypy_cache/
 
 ## Magic directories
 __pycache__/

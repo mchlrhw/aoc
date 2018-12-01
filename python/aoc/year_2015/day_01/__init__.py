@@ -1,6 +1,3 @@
-from .data import puzzle_input
-
-
 class BasementNotEntered(Exception):
     pass
 

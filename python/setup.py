@@ -10,6 +10,8 @@ setup(
     setup_requires=[
         'hypothesis',
         'pytest-cov',
+        'pytest-flake8',
+        'pytest-mypy',
         'pytest-runner',
     ],
     tests_require=[

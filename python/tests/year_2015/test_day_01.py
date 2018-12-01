@@ -2,7 +2,7 @@ import pytest
 
 from aoc.year_2015.day_01 import basement_entered, find_floor
 from aoc.year_2015.day_01 import BasementNotEntered
-from aoc.year_2015.day_01 import puzzle_input as real_instructions
+from aoc.year_2015.day_01.data import puzzle_input as real_instructions
 
 
 def test_find_floor_invalid_characters_skipped():

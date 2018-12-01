@@ -36,3 +36,20 @@ def apply_changes(
     for direction, amount in changes:
         frequency = direction(frequency, amount)
     return frequency
+
+
+def find_duplicate_frequency(
+        changes: List[Tuple[Callable, int]], frequency: int = 0) -> int:
+
+    seen = set([frequency])
+    found = False
+
+    while not found:
+        for direction, amount in changes:
+            frequency = direction(frequency, amount)
+            if frequency in seen:
+                found = True
+                break
+            seen.add(frequency)
+
+    return frequency

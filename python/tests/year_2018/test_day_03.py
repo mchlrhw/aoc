@@ -70,6 +70,19 @@ def test_place_claim_example():
 
 
 @pytest.mark.parametrize(
+    'claim',
+    [
+        '#1 @ 1,3:',
+        '#1 @ 1,a: 4x4',
+        '#1 @ 1,3: ax4',
+    ],
+)
+def test_invalid_claim(claim):
+    with pytest.raises(InvalidClaim):
+        parse_claim(claim)
+
+
+@pytest.mark.parametrize(
     'claim, expected',
     [
         ('#1 @ 1,3: 4x4', Rectangle(1, 3, 4, 4, '1')),

@@ -9,3 +9,8 @@ jobs:
           command: |
             cd python
             python3 setup.py test
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - test_python

@@ -1,6 +1,6 @@
 import pytest
 
-from aoc.year_2018.day_03 import init_fabric, fabric_to_str
+from aoc.year_2018.day_03 import init_fabric, fabric_to_str, get_claim_areas
 from aoc.year_2018.day_03 import parse_claim, place_claim
 from aoc.year_2018.day_03 import InvalidClaim, Rectangle
 from aoc.year_2018.day_03.data import puzzle_input
@@ -120,3 +120,41 @@ def test_overlap_puzzle_input():
                 overlap += 1
 
     assert overlap == 112418
+
+
+def test_get_claim_areas_example():
+    fabric = [
+        ['.', '.', '.', '.', '.', '.', '.', '.'],
+        ['.', '.', '.', '2', '2', '2', '2', '.'],
+        ['.', '.', '.', '2', '2', '2', '2', '.'],
+        ['.', '1', '1', 'X', 'X', '2', '2', '.'],
+        ['.', '1', '1', 'X', 'X', '2', '2', '.'],
+        ['.', '1', '1', '1', '1', '3', '3', '.'],
+        ['.', '1', '1', '1', '1', '3', '3', '.'],
+        ['.', '.', '.', '.', '.', '.', '.', '.'],
+    ]
+    claim_areas = get_claim_areas(fabric)
+    expected_1, expected_2, expected_3 = 12, 12, 4
+
+    assert claim_areas['1'] == expected_1
+    assert claim_areas['2'] == expected_2
+    assert claim_areas['3'] == expected_3
+
+
+def test_non_overlapping_claim_puzzle_input():
+    fabric = init_fabric()
+    raw_claims = [r.strip() for r in puzzle_input.splitlines() if r]
+    claims = [parse_claim(r) for r in raw_claims]
+    for claim in claims:
+        place_claim(fabric, claim)
+
+    claim_areas_before = {c.tag: c.width*c.height for c in claims}
+    claim_areas_after = get_claim_areas(fabric)
+
+    non_overlapping = set()
+    for tag, area in claim_areas_before.items():
+        if claim_areas_after[tag] == area:
+            non_overlapping.add(tag)
+
+    assert len(non_overlapping) == 1
+    assert non_overlapping.pop() == '560'

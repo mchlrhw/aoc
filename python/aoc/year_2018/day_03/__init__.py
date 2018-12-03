@@ -1,3 +1,4 @@
+from collections import Counter
 from dataclasses import dataclass
 from typing import List, Mapping, Tuple
 
@@ -79,3 +80,10 @@ def place_claim(fabric: List[List[str]], claim: Rectangle) -> List[List[str]]:
                 fabric[y][x] = claim.tag
 
     return fabric
+
+
+def get_claim_areas(fabric: List[List[str]]) -> Mapping[str, int]:
+    areas: Counter = Counter()
+    for column in fabric:
+        areas.update(column)
+    return areas

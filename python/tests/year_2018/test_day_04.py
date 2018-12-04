@@ -7,7 +7,21 @@ import pytest
 from aoc.year_2018.day_04 import compile_schedule
 from aoc.year_2018.day_04 import find_sleepiest_guard, find_sleepiest_minute
 from aoc.year_2018.day_04 import parse_log_line, parse_shift_start_event
+from aoc.year_2018.day_04 import InvalidEvent
 from aoc.year_2018.day_04.data import puzzle_input
+
+
+@pytest.mark.parametrize(
+    'event',
+    [
+        'Foobar #42 begins shift',
+        'Guard #42 starts shift',
+        'Guard #a begins shift',
+    ],
+)
+def test_invalid_shift_start_event(event):
+    with pytest.raises(InvalidEvent):
+        parse_shift_start_event(event)
 
 
 @pytest.mark.parametrize(
@@ -38,12 +52,18 @@ def test_parse_log_line_examples(line, expected):
     [
         ('Guard #10 begins shift', 10),
         ('Guard #99 begins shift', 99),
-    ]
+    ],
 )
 def test_parse_shift_start_event_examples(event, expected):
     guard_id = parse_shift_start_event(event)
 
     assert guard_id == expected
+
+
+def test_compile_schedule_invalid_event():
+    log = [(datetime(1518, 11, 1, 0, 0), 'invalid event')]
+    with pytest.raises(InvalidEvent):
+        compile_schedule(log)
 
 
 LOG_LINES_EXAMPLE = """

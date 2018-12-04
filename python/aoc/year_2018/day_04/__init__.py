@@ -68,7 +68,7 @@ def find_sleepiest_guard(schedule: Mapping[int, Mapping[date, Set[int]]]) \
 
 
 def find_sleepiest_minute(sleep_schedule: Mapping[date, Set[int]]) \
-        -> int:
+        -> Tuple[int, int]:
 
     minute_scores: defaultdict = defaultdict(int)
 
@@ -76,6 +76,6 @@ def find_sleepiest_minute(sleep_schedule: Mapping[date, Set[int]]) \
         for minute in sleep_block:
             minute_scores[minute] += 1
 
-    sleepiest, _ = max(minute_scores.items(), key=lambda i: i[1])
+    sleepiest, occurences = max(minute_scores.items(), key=lambda i: i[1])
 
-    return sleepiest
+    return sleepiest, occurences

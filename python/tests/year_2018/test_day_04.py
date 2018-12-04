@@ -1,4 +1,5 @@
 from collections import defaultdict
+from dataclasses import dataclass
 from datetime import date, datetime
 
 import pytest
@@ -132,7 +133,7 @@ def test_find_sleepiest_minute_examples(guard_id, expected):
             if l.strip())
     schedule = compile_schedule(log_lines)
     sleep_schedule = schedule[guard_id]
-    minute = find_sleepiest_minute(sleep_schedule)
+    minute, _ = find_sleepiest_minute(sleep_schedule)
 
     assert minute == expected
 
@@ -147,7 +148,31 @@ def test_find_sleepiest_guard_minute_puzzle_input():
     guard_id = find_sleepiest_guard(schedule)
     sleep_schedule = schedule[guard_id]
 
-    minute = find_sleepiest_minute(sleep_schedule)
+    minute, _ = find_sleepiest_minute(sleep_schedule)
     result = guard_id * minute
 
     assert result == 65489
+
+
+def test_find_sleepiest_minute_guard_puzzle_input():
+    @dataclass
+    class Best:
+        guard_id: int
+        minute: int
+        occurences: int
+
+    log_lines = \
+        (parse_log_line(l)
+            for l in puzzle_input.splitlines()
+            if l.strip())
+    schedule = compile_schedule(log_lines)
+
+    best = Best(0, 0, 0)
+    for guard_id, sleep_schedule in schedule.items():
+        minute, occurences = find_sleepiest_minute(sleep_schedule)
+        if occurences > best.occurences:
+            best = Best(guard_id, minute, occurences)
+
+    result = best.guard_id * best.minute
+
+    assert result == 3852

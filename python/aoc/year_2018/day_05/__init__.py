@@ -29,6 +29,7 @@ def clean_polymer(polymer: str, unit_type: str) -> str:
 
 
 def optimise_polymer(polymer: str) -> str:
+    polymer = react_polymer(polymer)
     unit_types = set(polymer.lower())
 
     best = polymer

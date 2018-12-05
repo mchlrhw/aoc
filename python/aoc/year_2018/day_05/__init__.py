@@ -1,30 +1,24 @@
 def react_polymer(polymer: str) -> str:
+    buf = list(polymer)
     reactions = True
+    i = 0
 
     while reactions:
-        last = len(polymer)
-        new_polymer = ''
-        reactions = False
-        skip = False
-
-        for i, c in enumerate(polymer, start=1):
-            if skip:
-                skip = False
-                continue
-            if i == last:
-                new_polymer += c
+        while i < len(buf):  # pragma: no branch
+            try:
+                unit = buf[i]
+                next_unit = buf[i+1]
+            except IndexError:
+                reactions = False
                 break
-
-            next_c = polymer[i]
-            if c != next_c and c.lower() == next_c.lower():
-                reactions = True
-                skip = True
+            if unit != next_unit and unit.lower() == next_unit.lower():
+                buf.pop(i)
+                buf.pop(i)
+                i -= 1
             else:
-                new_polymer += c
+                i += 1
 
-        polymer = new_polymer
-
-    return polymer
+    return ''.join(buf)
 
 
 def clean_polymer(polymer: str, unit_type: str) -> str:
@@ -37,12 +31,11 @@ def clean_polymer(polymer: str, unit_type: str) -> str:
 def optimise_polymer(polymer: str) -> str:
     unit_types = set(polymer.lower())
 
-    best = None
+    best = polymer
     for unit_type in unit_types:
-        cleaned = clean_polymer(polymer, unit_type)
-        reacted = react_polymer(cleaned)
-        units = len(reacted)
-        if best is None or len(best) > units:
-            best = reacted
+        new_polymer = clean_polymer(polymer, unit_type)
+        new_polymer = react_polymer(new_polymer)
+        if len(best) > len(new_polymer):
+            best = new_polymer
 
     return best

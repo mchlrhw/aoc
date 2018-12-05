@@ -1,22 +1,20 @@
-def react_polymer(polymer: str) -> str:
-    buf = list(polymer)
-    reactions = True
-    i = 0
+from typing import List
 
-    while reactions:
-        while i < len(buf):  # pragma: no branch
-            try:
-                unit = buf[i]
-                next_unit = buf[i+1]
-            except IndexError:
-                reactions = False
-                break
-            if unit != next_unit and unit.lower() == next_unit.lower():
-                buf.pop(i)
-                buf.pop(i)
-                i -= 1
-            else:
-                i += 1
+
+def react_polymer(polymer: str) -> str:
+    buf: List[str] = []
+
+    for unit in polymer:
+        try:
+            prev_unit = buf.pop()
+        except IndexError:
+            buf.append(unit)
+            continue
+
+        if unit != prev_unit and unit.lower() == prev_unit.lower():
+            continue
+        else:
+            buf.extend((prev_unit, unit))
 
     return ''.join(buf)
 

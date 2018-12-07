@@ -21,3 +21,10 @@ venv/
 
 ## Magic directories
 __pycache__/
+
+
+# Rust
+# ~~~~
+
+## Directories
+target/

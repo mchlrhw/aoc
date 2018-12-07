@@ -9,8 +9,18 @@ jobs:
           command: |
             cd python
             python3 setup.py test
+  test_rust:
+    docker:
+      - image: circleci/rust:1.31.0
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd rust
+            cargo test
 workflows:
   version: 2
   workflow:
     jobs:
     - test_python
+    - test_rust

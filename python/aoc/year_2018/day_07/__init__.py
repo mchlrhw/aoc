@@ -1,7 +1,6 @@
 import re
-from collections import deque
 from dataclasses import dataclass, field
-from typing import Iterable, List, Mapping, Set
+from typing import Dict, Iterable, Mapping, Set
 
 
 STEP_REGEX = re.compile(
@@ -9,6 +8,10 @@ STEP_REGEX = re.compile(
     r' must be finished before'
     r' step (?P<dependent>[A-Z]) can begin.'
 )
+
+
+class InvalidStep(Exception):
+    pass
 
 
 @dataclass
@@ -19,20 +22,23 @@ class Step:
 
 
 def parse_steps(step_specs: Iterable[str]) -> Mapping[str, Step]:
-    steps = {}
+    steps: Dict[str, Step] = {}
 
     for step_spec in step_specs:
         m = STEP_REGEX.match(step_spec)
+        if m is None:
+            raise InvalidStep()
+
         tag = m.group('tag')
-        dependent = m.group('dependent')
+        dependent_tag = m.group('dependent')
 
         try:
             step = steps[tag]
-            step.dependents.add(dependent)
+            step.dependents.add(dependent_tag)
         except KeyError:
             step = Step(
                 tag=tag,
-                dependents=set([dependent]),
+                dependents=set([dependent_tag]),
             )
             steps[tag] = step
 
@@ -58,7 +64,7 @@ def find_roots(steps: Mapping[str, Step]) -> Set[str]:
     return roots
 
 
-def linearise_steps(steps: Mapping[str, Step]) -> List[str]:
+def linearise_steps(steps: Mapping[str, Step]) -> str:
     steps_available = find_roots(steps)
     linearised = ''
 

@@ -1,8 +1,16 @@
 import pytest
 
-from aoc.year_2018.day_07 import linearise_steps, parse_steps
-from aoc.year_2018.day_07 import Step
+from aoc.year_2018.day_07 import find_roots, linearise_steps, parse_steps
+from aoc.year_2018.day_07 import InvalidStep, Step
 from aoc.year_2018.day_07.data import puzzle_input
+
+
+def test_invalid_step():
+    step_specs = [
+        'Invalid',
+    ]
+    with pytest.raises(InvalidStep):
+        parse_steps(step_specs)
 
 
 def test_parse_steps_example():
@@ -28,6 +36,22 @@ Step F must be finished before step E can begin.
     }
 
     assert steps == expected
+
+
+def test_find_roots_example():
+    steps = {
+        'A': Step('A', set(['C']), set(['B', 'D'])),
+        'B': Step('B', set(['A']), set(['E'])),
+        'C': Step('C', set(), set(['A', 'F'])),
+        'D': Step('D', set(['A']), set(['E'])),
+        'E': Step('E', set(['B', 'D', 'F']), set()),
+        'F': Step('F', set(['C']), set(['E'])),
+    }
+
+    roots = find_roots(steps)
+    expected = set(['C'])
+
+    assert roots == expected
 
 
 def test_linearised_example():

@@ -94,3 +94,11 @@ def test_linearised_with_workers_example():
 
     assert linearised == expected_order
     assert time_taken == expected_time
+
+
+def test_linearised_with_workers_puzzle_input():
+    step_specs = (s.strip() for s in puzzle_input.splitlines() if s.strip())
+    steps = parse_steps(step_specs)
+    _, time_taken = linearise_steps(steps, workers=5, base_weight=60)
+
+    assert time_taken == 1180

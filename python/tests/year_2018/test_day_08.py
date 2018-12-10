@@ -1,4 +1,4 @@
-from aoc.year_2018.day_08 import parse_licence, sum_metadata
+from aoc.year_2018.day_08 import parse_licence, sum_metadata, sum_values
 from aoc.year_2018.day_08 import Node
 from aoc.year_2018.day_08.data import puzzle_input
 
@@ -62,3 +62,37 @@ def test_sum_metadata_puzzle_input():
     total = sum_metadata(tree)
 
     assert total == 41849
+
+
+def test_sum_values_example():
+    tree = Node(
+        children=[
+            Node(
+                children=[],
+                metadata=[10, 11, 12],
+            ),
+            Node(
+                children=[
+                    Node(
+                        children=[],
+                        metadata=[99],
+                    ),
+                ],
+                metadata=[2],
+            ),
+        ],
+        metadata=[1, 1, 2],
+    )
+    expected = 66
+
+    total = sum_values(tree)
+
+    assert total == expected
+
+
+def test_sum_values_puzzle_input():
+    licence = [int(p.strip()) for p in puzzle_input.split()]
+    tree, _ = parse_licence(licence)
+    total = sum_values(tree)
+
+    assert total == 32487

@@ -34,3 +34,19 @@ def sum_metadata(tree: Node) -> int:
     result += sum(tree.metadata)
 
     return result
+
+
+def sum_values(tree: Node) -> int:
+    if not tree.children:
+        return sum(tree.metadata)
+
+    result = 0
+
+    indices = [m-1 for m in tree.metadata if m-1 >= 0]
+    for index in indices:
+        try:
+            result += sum_values(tree.children[index])
+        except IndexError:
+            continue
+
+    return result

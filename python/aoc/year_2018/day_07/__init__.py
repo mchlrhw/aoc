@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass, field
-from typing import Dict, Iterable, Mapping, Set
+from typing import Dict, Iterable, Mapping, Set, Tuple
 
 
 STEP_REGEX = re.compile(
@@ -8,6 +8,8 @@ STEP_REGEX = re.compile(
     r' must be finished before'
     r' step (?P<dependent>[A-Z]) can begin.'
 )
+
+WEIGHTS = {t: w for w, t in enumerate('ABCDEFGHIJKLMNOPQRSTUVWXYZ', start=1)}
 
 
 class InvalidStep(Exception):
@@ -64,18 +66,37 @@ def find_roots(steps: Mapping[str, Step]) -> Set[str]:
     return roots
 
 
-def linearise_steps(steps: Mapping[str, Step]) -> str:
+def linearise_steps(
+        steps: Mapping[str, Step],
+        workers: int = 1,
+        base_weight: int = 0,
+        ) -> Tuple[str, int]:
+
+    work_in_progress: Dict[str, int] = {}
     steps_available = find_roots(steps)
     linearised = ''
+    time_taken = 0
 
-    while steps_available:
-        next_step = list(sorted(steps_available))[0]
-        steps_available.remove(next_step)
-        linearised += next_step
+    while work_in_progress or steps_available:
+        for step in list(sorted(steps_available)):
+            if len(work_in_progress) >= workers:
+                break
+            work_in_progress[step] = WEIGHTS[step] + base_weight
+            steps_available.remove(step)
 
-        for dependent in steps[next_step].dependents:
-            dependencies = steps[dependent].dependencies
-            if all(d in linearised for d in dependencies):
-                steps_available.add(dependent)
+        for step in list(sorted(work_in_progress)):
+            work_in_progress[step] -= 1
+            if work_in_progress[step]:
+                continue
 
-    return linearised
+            work_in_progress.pop(step)
+            linearised += step
+
+            for dependent in steps[step].dependents:
+                dependencies = steps[dependent].dependencies
+                if all(d in linearised for d in dependencies):
+                    steps_available.add(dependent)
+
+        time_taken += 1
+
+    return linearised, time_taken

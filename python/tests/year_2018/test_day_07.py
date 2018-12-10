@@ -64,7 +64,7 @@ def test_linearised_example():
         'F': Step('F', set(['C']), set(['E'])),
     }
 
-    linearised = linearise_steps(steps)
+    linearised, _ = linearise_steps(steps)
     expected = 'CABDFE'
 
     assert linearised == expected
@@ -73,6 +73,24 @@ def test_linearised_example():
 def test_linearised_puzzle_input():
     step_specs = (s.strip() for s in puzzle_input.splitlines() if s.strip())
     steps = parse_steps(step_specs)
-    linearised = linearise_steps(steps)
+    linearised, _ = linearise_steps(steps)
 
     assert linearised == 'LFMNJRTQVZCHIABKPXYEUGWDSO'
+
+
+def test_linearised_with_workers_example():
+    steps = {
+        'A': Step('A', set(['C']), set(['B', 'D'])),
+        'B': Step('B', set(['A']), set(['E'])),
+        'C': Step('C', set(), set(['A', 'F'])),
+        'D': Step('D', set(['A']), set(['E'])),
+        'E': Step('E', set(['B', 'D', 'F']), set()),
+        'F': Step('F', set(['C']), set(['E'])),
+    }
+
+    linearised, time_taken = linearise_steps(steps, workers=2)
+    expected_order = 'CABFDE'
+    expected_time = 15
+
+    assert linearised == expected_order
+    assert time_taken == expected_time

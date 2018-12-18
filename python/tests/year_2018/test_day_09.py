@@ -64,3 +64,11 @@ def test_play_puzzle_input():
     high_score = game.play()
 
     assert high_score == 393229
+
+
+@pytest.mark.skip(reason='slow even with linked list impl')
+def test_play_puzzle_input():
+    game = MarbleMania(441, 7103200)
+    high_score = game.play()
+
+    assert high_score == 3273405195

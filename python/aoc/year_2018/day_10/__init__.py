@@ -34,7 +34,7 @@ def parse_point(point_spec: str) -> Point:
         y = int(m.group('y'))
         vx = int(m.group('vx'))
         vy = int(m.group('vy'))
-    except ValueError:
+    except ValueError:  # pragma: no cover
         raise InvalidPoint()
 
     return Point(x, y, vx, vy)

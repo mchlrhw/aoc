@@ -2,8 +2,23 @@ import pytest
 
 from aoc.year_2018.day_10 import get_limits, move_points
 from aoc.year_2018.day_10 import parse_point, plot_points
-from aoc.year_2018.day_10 import Point
+from aoc.year_2018.day_10 import InvalidPoint, Point
 from aoc.year_2018.day_10.data import puzzle_input
+
+
+@pytest.mark.parametrize(
+    'invalid_input',
+    [
+        '',
+        'position=< a,  1> velocity=< 0,  2>',
+        'position=< 9,  a> velocity=< 0,  2>',
+        'position=< 9,  1> velocity=< a,  2>',
+        'position=< 9,  1> velocity=< 0,  a>',
+    ],
+)
+def test_invalid_point(invalid_input):
+    with pytest.raises(InvalidPoint):
+        parse_point(invalid_input)
 
 
 @pytest.mark.parametrize(

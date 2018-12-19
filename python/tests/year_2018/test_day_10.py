@@ -121,7 +121,7 @@ def test_plot_points_example():
 def test_move_points():
     points = [parse_point(p) for p in test_input.splitlines() if p.strip()]
     examples = [
-"""\
+        """\
 ........#....#....
 ......#.....#.....
 #.........#......#
@@ -135,7 +135,7 @@ def test_move_points():
 #...........#.....
 ..#.....#.#.......
 """,
-"""\
+        """\
 ..........#...
 #..#...####..#
 ..............
@@ -147,7 +147,7 @@ def test_move_points():
 .#...#...##.#.
 ....#.........
 """,
-"""\
+        """\
 #...#..###
 #...#...#.
 #...#...#.
@@ -157,7 +157,7 @@ def test_move_points():
 #...#...#.
 #...#..###
 """,
-"""\
+        """\
 ........#....
 ....##...#.#.
 ..#.....#..#.
@@ -169,8 +169,7 @@ def test_move_points():
 .#.....##....
 ...........#.
 ...........#.
-"""
-    ]
+"""]
 
     for expected in examples:
         points = move_points(points)

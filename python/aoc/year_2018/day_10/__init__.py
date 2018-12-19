@@ -4,7 +4,12 @@ from operator import attrgetter
 from typing import Iterable, List, Tuple
 
 
-POINT_REGEX = re.compile(r'position=<(?P<x>[ ]*-?[0-9]+),(?P<y>[ ]*-?[0-9]+)> velocity=<(?P<vx>[ ]*-?[0-9]+),(?P<vy>[ ]*-?[0-9]+)>')
+COORD = r'[ ]*-?[0-9]+'
+X = fr'(?P<x>{COORD})'
+Y = fr'(?P<y>{COORD})'
+VX = fr'(?P<vx>{COORD})'
+VY = fr'(?P<vy>{COORD})'
+POINT_REGEX = re.compile(fr'position=<{X},{Y}> velocity=<{VX},{VY}>')
 
 
 class InvalidPoint(Exception):

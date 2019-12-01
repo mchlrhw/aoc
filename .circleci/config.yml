@@ -11,7 +11,7 @@ jobs:
             python3 setup.py test
   test_rust:
     docker:
-      - image: circleci/rust:1.31.0
+      - image: circleci/rust:latest
     steps:
       - checkout
       - run:

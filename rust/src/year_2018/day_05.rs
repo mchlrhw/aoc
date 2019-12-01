@@ -1,4 +1,4 @@
-fn react_polymer(polymer: &str) -> String {
+pub fn react_polymer(polymer: &str) -> String {
     let mut buf = String::new();
 
     for unit in polymer.chars() {
@@ -24,13 +24,13 @@ mod tests {
     use rstest::rstest_parametrize;
 
     #[rstest_parametrize(
-        polymer, expected,
-
+        polymer,
+        expected,
         case("aA", ""),
         case("abBA", ""),
         case("abAB", "abAB"),
         case("aabAAB", "aabAAB"),
-        case("dabAcCaCBAcCcaDA", "dabCBAcaDA"),
+        case("dabAcCaCBAcCcaDA", "dabCBAcaDA")
     )]
     fn react_polymer_examples(polymer: &str, expected: &str) {
         let reacted = react_polymer(polymer);

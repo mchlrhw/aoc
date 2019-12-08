@@ -1,5 +1,5 @@
 pub fn calculate_fuel(mass: u32) -> u32 {
-    (mass / 3).checked_sub(2).unwrap_or(0)
+    (mass / 3).saturating_sub(2)
 }
 
 pub fn calculate_fuel_inclusive(mass: u32) -> u32 {

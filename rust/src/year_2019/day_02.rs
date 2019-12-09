@@ -139,4 +139,34 @@ mod tests {
 
         assert_eq!(result, 2782414);
     }
+
+    #[test]
+    #[throws(Error)]
+    #[allow(unused)]
+    fn part_2_solution() {
+        let puzzle_input = String::from_utf8_lossy(include_bytes!("day_02/input.txt"));
+
+        let mut noun = 0;
+        let mut verb = 0;
+
+        'out: for a in 0..=99 {
+            for b in 0..=99 {
+                let mut program = load(&puzzle_input)?;
+                program[1] = a;
+                program[2] = b;
+
+                let final_state = compute(program)?;
+                let result = final_state[0];
+                if result == 19690720 {
+                    noun = a;
+                    verb = b;
+                    break 'out;
+                }
+            }
+        }
+
+        let answer = 100 * noun + verb;
+
+        assert_eq!(answer, 9820);
+    }
 }
